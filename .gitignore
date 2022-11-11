@@ -149,7 +149,7 @@ cython_debug/
 
 # Environments
 # トークン書き込み用
-# .env
+.env
 .venv
 env/
 venv/
