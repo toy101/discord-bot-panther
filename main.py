@@ -75,7 +75,10 @@ async def button_clicked(ctx):
     else:
         record = time.perf_counter() - first_record
 
-    # user = await ctx.message.guild.query_member(ctx.member.id)
+    if ctx.guild.voice_client is not None:
+        ctx.guild.voice_client.stop()
+        ctx.guild.voice_client.play(discord.FFmpegPCMAudio("./resouce/pinpon.mp3"))
+
     display_name = None
     members = ctx.guild.members
     for m in members:
