@@ -82,7 +82,28 @@ async def button_clicked(ctx):
         if m.id == ctx.member.id:
             display_name=m.nick
             break
+    
+    await ctx.reply()
+    await ctx.channel.send(f'{display_name} pushed: +{round(record, 2)}s')
 
-    await ctx.channel.send(f'{display_name} pushed: +{round(record, 5)}s')
+@bot.command()
+async def summon(ctx):
+
+     # コマンド送信主の入ってるチャンネルを取得
+    try:
+        v_channel = ctx.author.voice.channel
+        await v_channel.connect()
+    except AttributeError:
+        await ctx.send("コマンドの実行者はボイスチャンネルに入室してください")
+        return
+
+@bot.command()
+async def kick(ctx):
+
+    if ctx.guild.voice_client is None:
+        await ctx.send("Botはボイスチャンネルに入室していません...")
+        return
+    else:
+        await ctx.guild.voice_client.disconnect()
 
 bot.run(TOKEN)
