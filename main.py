@@ -21,6 +21,7 @@ buttons = ButtonsClient(bot)
 slash = InteractionClient(bot)
 
 first_record = None
+target_txt_channel = None
 time_reset_emoji = "♻"
 
 # bot起動完了時に実行される処理
@@ -69,9 +70,24 @@ async def start(ctx):
     sended_btn = await t_channel.history().get(author__id=bot_id)
     await sended_btn.add_reaction(time_reset_emoji)
 
+@bot.command()
+async def target(ctx):
+    global target_txt_channel
+
+    target_txt_channel = ctx.channel
+    await target_txt_channel.send("解答者ログはこちらのチャンネルに流れます(解除コマンド: `!default`)")
+
+@bot.command()
+async def default(ctx):
+    global target_txt_channel
+
+    target_txt_channel = None
+    await ctx.channel.send("解答者ログはボタンが送信されたチャンネルに流れます")
+
 @buttons.click
 async def button_clicked(ctx):
     global first_record
+    global target_txt_channel
 
     record = None
     if not first_record:
@@ -92,7 +108,13 @@ async def button_clicked(ctx):
             break
     
     await ctx.reply()
-    await ctx.channel.send(f'{display_name} pushed: +{round(record, 2)}s')
+
+    t_channel = None
+    if target_txt_channel:
+        t_channel = target_txt_channel
+    else:
+        t_channel = ctx.channel
+    await t_channel.send(f'{display_name} pushed: +{round(record, 2)}s')
 
 # タイマーリセット&ボタン再発行処理
 @bot.event
