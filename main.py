@@ -37,7 +37,6 @@ async def on_guild_join(guild):
     await guild.system_channel.send(content="Hello!")
 
 # メッセージ受信時に実行される処理
-
 @bot.event
 async def on_message(message):
     # on_messageイベントの取得とコマンド機能を併用する際に必要な処理
@@ -130,7 +129,6 @@ async def on_raw_reaction_add(payload):
 
 @bot.command()
 async def summon(ctx):
-
      # コマンド送信主の入ってるチャンネルを取得
     try:
         v_channel = ctx.author.voice.channel
