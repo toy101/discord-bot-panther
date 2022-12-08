@@ -24,7 +24,6 @@ first_record = None
 time_reset_emoji = "♻"
 
 # bot起動完了時に実行される処理
-
 @bot.event
 async def on_ready():
     print('準備完了')
