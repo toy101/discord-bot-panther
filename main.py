@@ -21,13 +21,14 @@ buttons = ButtonsClient(bot)
 slash = InteractionClient(bot)
 
 first_record = None
+time_reset_emoji = "♻"
 
 # bot起動完了時に実行される処理
 
 @bot.event
 async def on_ready():
     print('準備完了')
-    await bot.change_presence(activity=discord.Game("Python🐍"))
+    await bot.change_presence(activity=discord.Game("Python"))
 
 
 @bot.event
@@ -63,6 +64,12 @@ async def start(ctx):
                 ])
             ]
         )
+    
+    # sended_btn = (await bot.get_channel(ctx.channel.id).history(limit=1).flatten())[0]
+    bot_id = ctx.me.id
+    t_channel = ctx.channel
+    sended_btn = await t_channel.history().get(author__id=bot_id)
+    await sended_btn.add_reaction(time_reset_emoji)
 
 @buttons.click
 async def button_clicked(ctx):
@@ -88,6 +95,39 @@ async def button_clicked(ctx):
     
     await ctx.reply()
     await ctx.channel.send(f'{display_name} pushed: +{round(record, 2)}s')
+
+# タイマーリセット&ボタン再発行処理
+@bot.event
+async def on_raw_reaction_add(payload):
+    
+    if payload.member.bot:
+        return
+    if payload.emoji.name != time_reset_emoji:
+        return
+
+    channel = bot.get_channel(payload.channel_id)
+    await channel.send('=====↓ 新しいボタンを使ってください ↓=====')
+    
+    global first_record
+    first_record = None
+
+    await buttons.send(
+            "ボタンを押して解答！",
+            channel = payload.channel_id,
+            components = [
+                ActionRow([
+                    Button(
+                        label="I got it!", 
+                        style=ButtonType().Success, 
+                        custom_id="button_clicked",
+                        disabled = False
+                    )
+                ])
+            ]
+        )
+    
+    sended_btn = (await bot.get_channel(payload.channel_id).history(limit=1).flatten())[0]
+    await sended_btn.add_reaction(time_reset_emoji)
 
 @bot.command()
 async def summon(ctx):
