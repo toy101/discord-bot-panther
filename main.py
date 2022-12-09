@@ -44,7 +44,7 @@ async def on_guild_join(guild):
     embed.add_field(name="```!target```", value="解答者ログを流すテキストチャンネルを指定できます", inline=False)
     embed.set_footer(text="made by 登生",
                      icon_url="https://avatars.githubusercontent.com/u/45931528?v=4")
-    await ctx.send(embed=embed)
+    await guild.system_channel.send(embed=embed)
 
 # メッセージ受信時に実行される処理
 @bot.event
