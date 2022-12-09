@@ -171,7 +171,7 @@ async def on_raw_reaction_add(payload):
     await sended_btn.add_reaction(time_reset_emoji)
 
     if target_txt_channel:
-        await target_txt_channel('=====↓ Next Question ↓=====')
+        await target_txt_channel.send('=====↓ Next Question ↓=====')
 
 @bot.command()
 async def summon(ctx):
