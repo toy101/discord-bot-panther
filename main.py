@@ -35,7 +35,16 @@ async def on_ready():
 async def on_guild_join(guild):
     print("サーバーに参加")
 
-    await guild.system_channel.send(content="Hello!")
+    embed=discord.Embed(title="Hello World", description="I'm Python-Answer-Observer, Panther", color=0x404040)
+    
+    embed.add_field(name="```!start```", value="時間計測&解答ボタンの発行", inline=False)
+    embed.add_field(name="♻", value="計測リセット&新しいボタンの発行", inline=False)
+    embed.add_field(name="```!summon```", value="ボイスチャンネルに呼び出し（解答ボタンを押すとSEが流れます）", inline=False)
+    embed.add_field(name="```!kick```", value="ボイスチャンネルからの退出", inline=False)
+    embed.add_field(name="```!target```", value="解答者ログを流すテキストチャンネルを指定できます", inline=False)
+    embed.set_footer(text="made by 登生",
+                     icon_url="https://avatars.githubusercontent.com/u/45931528?v=4")
+    await ctx.send(embed=embed)
 
 # メッセージ受信時に実行される処理
 @bot.event
@@ -46,15 +55,14 @@ async def on_message(message):
 @bot.command()
 async def desc(ctx):
 
-    embed=discord.Embed(title="Hello World", description="I'm Python-Answer-Observer, Panther", color=0x404040)
+    embed=discord.Embed(title="使い方", color=0x404040)
     
     embed.add_field(name="```!start```", value="時間計測&解答ボタンの発行", inline=False)
     embed.add_field(name="♻", value="計測リセット&新しいボタンの発行", inline=False)
     embed.add_field(name="```!summon```", value="ボイスチャンネルに呼び出し（解答ボタンを押すとSEが流れます）", inline=False)
     embed.add_field(name="```!kick```", value="ボイスチャンネルからの退出", inline=False)
     embed.add_field(name="```!target```", value="解答者ログを流すテキストチャンネルを指定できます", inline=False)
-    embed.set_footer(text="made by 登生",
-                     icon_url="https://avatars.githubusercontent.com/u/45931528?v=4")
+    
     await ctx.send(embed=embed)
 
 @bot.command()
