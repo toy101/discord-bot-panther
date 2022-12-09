@@ -170,6 +170,9 @@ async def on_raw_reaction_add(payload):
     sended_btn = (await bot.get_channel(payload.channel_id).history(limit=1).flatten())[0]
     await sended_btn.add_reaction(time_reset_emoji)
 
+    if target_txt_channel:
+        await target_txt_channel('=====↓ Next Question ↓=====')
+
 @bot.command()
 async def summon(ctx):
      # コマンド送信主の入ってるチャンネルを取得
