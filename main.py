@@ -125,7 +125,10 @@ async def button_clicked(ctx):
     members = ctx.guild.members
     for m in members:
         if m.id == ctx.member.id:
-            display_name=m.nick
+            if m.nick:
+                display_name=m.nick
+            else:
+                display_name=m.name
             break
     
     await ctx.reply()
