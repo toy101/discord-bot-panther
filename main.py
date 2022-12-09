@@ -195,4 +195,49 @@ async def kick(ctx):
     else:
         await ctx.guild.voice_client.disconnect()
 
+@bot.command()
+async def judge(ctx):
+
+    await buttons.send(
+            "司会用ボタン",
+            channel = ctx.channel.id,
+            components = [
+                ActionRow([
+                    Button(
+                        label="正解", 
+                        style=ButtonType().Primary, 
+                        custom_id="correct_clicked",
+                        disabled = False
+                    ),
+                    Button(
+                        label="不正解", 
+                        style=ButtonType().Danger,
+                        custom_id="incorrect_clicked",
+                        disabled = False
+                    )
+                ])
+            ]
+        )
+
+@buttons.click
+async def correct_clicked(ctx):
+    if ctx.guild.voice_client is None:
+        await ctx.channel.send("このボタンを使うためには`!summon`コマンドでボイスチャンネルに入室させてください")
+    else:
+        ctx.guild.voice_client.stop()
+        ctx.guild.voice_client.play(discord.FFmpegPCMAudio("./resouce/correct.mp3"))
+
+    await ctx.reply()
+
+@buttons.click
+async def incorrect_clicked(ctx):
+    if ctx.guild.voice_client is None:
+        await ctx.channel.send("このボタンを使うためには`!summon`コマンドでボイスチャンネルに入室させてください")
+    else:
+        ctx.guild.voice_client.stop()
+        ctx.guild.voice_client.play(discord.FFmpegPCMAudio("./resouce/incorrect.mp3"))
+
+    await ctx.reply()
+
+
 bot.run(TOKEN)
